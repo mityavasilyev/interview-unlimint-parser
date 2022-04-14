@@ -9,6 +9,7 @@ import io.github.mityavasilyev.interviewunlimintparser.parser.JSONToOrderParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
@@ -17,6 +18,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @Slf4j
@@ -26,7 +28,8 @@ public class OrderServiceImpl implements OrderService {
     private final IdGenerator idGenerator;
 
     @Override
-    public List<Order> getOrdersFromFile(Path path) throws AccessDeniedException, FileNotFoundException {
+    @Async
+    public CompletableFuture<List<Order>> getOrdersFromFile(Path path) throws AccessDeniedException, FileNotFoundException {
 
         if (path.getFileName() == null) throw new FileNotFoundException(String.format("No such file: %s", path));
 
@@ -40,6 +43,7 @@ public class OrderServiceImpl implements OrderService {
                 ordersParser = new JSONToOrderParser(path, idGenerator);
                 break;
             default:
+                log.error("Unsupported file extension: {} [{}]", fileExtension, path);
                 throw new FileNotSupportedException(
                         String.format("No parser for [%s] extension implemented yet", fileExtension));
         }
@@ -54,6 +58,6 @@ public class OrderServiceImpl implements OrderService {
             log.error("Failed to parse entry in file: {}", path);
         }
 
-        return orders;
+        return CompletableFuture.completedFuture(orders);
     }
 }
