@@ -1,10 +1,12 @@
 package io.github.mityavasilyev.interviewunlimintparser.model;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 
+/**
+ * Order entity description class.
+ * Plus provides toString method that is used for output accordingly to a task
+ */
 @Getter
 @Builder
 public class Order {

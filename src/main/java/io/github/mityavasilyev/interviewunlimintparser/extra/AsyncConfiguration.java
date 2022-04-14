@@ -2,7 +2,6 @@ package io.github.mityavasilyev.interviewunlimintparser.extra;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -12,6 +11,11 @@ import java.util.concurrent.Executor;
 @EnableAsync
 public class AsyncConfiguration {
 
+    /**
+     * Config for proper execution of CompletableFutures
+     *
+     * @return configured threads executor
+     */
     @Bean
     public Executor taskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();

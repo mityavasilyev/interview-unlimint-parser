@@ -5,6 +5,11 @@ import org.springframework.util.StringUtils;
 
 import java.util.Locale;
 
+/**
+ * Represents options for available currencies.
+ * Everything here is kinda pretty self-explanatory.
+ * Needed for a proper currency validation
+ */
 @Getter
 public enum Currency {
     USD("USD", "United States Dollar", '$'),

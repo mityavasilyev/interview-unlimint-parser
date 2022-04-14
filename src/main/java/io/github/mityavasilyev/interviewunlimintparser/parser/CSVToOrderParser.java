@@ -28,6 +28,15 @@ public class CSVToOrderParser implements FileToOrdersParser {
     private final CSVReader csvReader;
     private final IdGenerator idGenerator;
 
+    /**
+     * Creates new CSV Parser with default delimiter
+     * for csv file as ',' (comma).
+     *
+     * @param path Path to the file to get data from
+     * @param idGenerator Class that will generate ids for Order entries
+     * @throws FileNotFoundException if file was not found
+     * @throws AccessDeniedException if file is protected
+     */
     public CSVToOrderParser(Path path, IdGenerator idGenerator)
             throws FileNotFoundException, AccessDeniedException {
 
@@ -35,6 +44,15 @@ public class CSVToOrderParser implements FileToOrdersParser {
 
     }
 
+    /**
+     * Creates new CSV Parser
+     *
+     * @param path Path to the file to get data from
+     * @param  delimiter Custom csv delimiter
+     * @param idGenerator Class that will generate ids for Order entries
+     * @throws FileNotFoundException if file was not found
+     * @throws AccessDeniedException if file is protected
+     */
     public CSVToOrderParser(Path path, char delimiter, IdGenerator idGenerator)
             throws FileNotFoundException, AccessDeniedException {
 
@@ -57,6 +75,13 @@ public class CSVToOrderParser implements FileToOrdersParser {
                 .build();
     }
 
+    /**
+     * Reads next order from the file. Assigns
+     * provided id to an operation (parser itself does not manage ID assignment).
+     * Returns default invalid order entity if csv entry has incorrect amount of fields.
+     *
+     * @return next order. Returns null if reached the end of file
+     */
     @Override
     public Order readNextOrder() {
         try {

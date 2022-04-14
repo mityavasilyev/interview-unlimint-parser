@@ -27,6 +27,15 @@ public class OrderServiceImpl implements OrderService {
 
     private final IdGenerator idGenerator;
 
+    /**
+     * Gets a list or orders from a provided file.
+     * Currently, supporting csv and json
+     *
+     * @param path Path to a file to read data from
+     * @return List of orders extracted from a file
+     * @throws AccessDeniedException If file is protected
+     * @throws FileNotFoundException If file was no found
+     */
     @Override
     @Async
     public CompletableFuture<List<Order>> getOrdersFromFile(Path path) throws AccessDeniedException, FileNotFoundException {
@@ -34,7 +43,8 @@ public class OrderServiceImpl implements OrderService {
         if (path.getFileName() == null) throw new FileNotFoundException(String.format("No such file: %s", path));
 
         String fileExtension = FilenameUtils.getExtension(String.valueOf(path.getFileName()));
-        FileToOrdersParser ordersParser;
+
+        FileToOrdersParser ordersParser;    // Choosing a proper parser based on a file extension
         switch (fileExtension.toLowerCase(Locale.ROOT)) {
             case "csv":
                 ordersParser = new CSVToOrderParser(path, idGenerator);
@@ -50,12 +60,12 @@ public class OrderServiceImpl implements OrderService {
 
         List<Order> orders = new ArrayList<>();
         Order nextOrder;
-        try {
-            while ((nextOrder = ordersParser.readNextOrder()) != null) {
+        while ((nextOrder = ordersParser.readNextOrder()) != null) {
+            try {
                 orders.add(nextOrder);
+            } catch (Exception exception) {
+                log.error("Failed to add entry from file: {}", path);
             }
-        } catch (Exception exception) {
-            log.error("Failed to parse entry in file: {}", path);
         }
 
         return CompletableFuture.completedFuture(orders);

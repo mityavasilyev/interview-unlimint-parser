@@ -23,6 +23,14 @@ public class JSONToOrderParser implements FileToOrdersParser {
     private List<Map<String,String>> orderDTOS;
     private final Integer initialEntriesAmount;
 
+    /**
+     * Creates new JSON Parser
+     *
+     * @param path Path to the file to get data from
+     * @param idGenerator Class that will generate ids for Order entries
+     * @throws FileNotFoundException if file was not found
+     * @throws AccessDeniedException if file is protected
+     */
     public JSONToOrderParser(Path path, IdGenerator idGenerator) throws AccessDeniedException, FileNotFoundException {
         this.path = path;
         this.idGenerator = idGenerator;
@@ -45,6 +53,13 @@ public class JSONToOrderParser implements FileToOrdersParser {
         initialEntriesAmount = orderDTOS.size();    // Needed for line property calculation. Json is tricky to read by lines
     }
 
+    /**
+     * Reads next order from the file. Assigns
+     * provided id to an operation (parser itself does not manage ID assignment).
+     * Line property of the returned order corresponds to a json object index, not a line of document
+     *
+     * @return next order. Returns null if reached the end of file
+     */
     @Override
     public Order readNextOrder() {
         if (orderDTOS.isEmpty()) return null;
