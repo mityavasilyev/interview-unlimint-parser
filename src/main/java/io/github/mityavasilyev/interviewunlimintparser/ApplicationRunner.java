@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -20,19 +21,29 @@ public class ApplicationRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // Logging args
-        StringBuilder passedArgs = new StringBuilder();
-        if (args.length > 0)
-            for (String arg: args)
-                passedArgs.append(" | ").append(arg);
-        log.info("Passed args: {}", passedArgs);
+
+        // Will keep track of all futures
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
 
         for (String arg : args) {
-            orderService
+            CompletableFuture<Void> parsingProcess = orderService
                     .getOrdersFromFile(Paths.get(arg))
-                    .thenAcceptAsync((List<Order> orders) -> {
+                    .thenAcceptAsync(orders -> {
+                        // Printing list once done parsing
                         for (Order order : orders) System.out.println(order);
                     });
+            futures.add(parsingProcess);
         }
+
+        // From here it's just few lines for proper program termination
+        CompletableFuture<Void> godFatherOfFutures = CompletableFuture
+                .allOf(futures.toArray(new CompletableFuture[0]));
+
+        // Checking every second whether parsing processes are finished
+        while (!godFatherOfFutures.isDone()) {
+            Thread.sleep(1000); // Yes, I know it's busy-waiting. But that's intentional
+        }
+        System.exit(0);
+
     }
 }
