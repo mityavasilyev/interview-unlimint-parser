@@ -8,7 +8,7 @@ public interface FileToOrdersParser {
      * Reads next order from the file. Assigns
      * provided id to an operation (does not manage ID assignment)
      *
-     * @return next order
+     * @return next order. Returns null if reached the end of file
      */
     Order readNextOrder();
 }

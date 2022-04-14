@@ -7,10 +7,10 @@ import io.github.mityavasilyev.interviewunlimintparser.parser.CSVToOrderParser;
 import io.github.mityavasilyev.interviewunlimintparser.parser.FileToOrdersParser;
 import io.github.mityavasilyev.interviewunlimintparser.parser.JSONToOrderParser;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Path;
@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
@@ -36,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
                 ordersParser = new CSVToOrderParser(path, idGenerator);
                 break;
             case "json":
-                ordersParser = new JSONToOrderParser();
+                ordersParser = new JSONToOrderParser(path, idGenerator);
                 break;
             default:
                 throw new FileNotSupportedException(
@@ -45,8 +46,12 @@ public class OrderServiceImpl implements OrderService {
 
         List<Order> orders = new ArrayList<>();
         Order nextOrder;
-        while ((nextOrder = ordersParser.readNextOrder()) != null) {
-            orders.add(nextOrder);
+        try {
+            while ((nextOrder = ordersParser.readNextOrder()) != null) {
+                orders.add(nextOrder);
+            }
+        } catch (Exception exception) {
+            log.error("Failed to parse entry in file: {}", path);
         }
 
         return orders;

@@ -36,7 +36,8 @@ public class InterviewUnlimintParserApplication implements CommandLineRunner {
         log.info("Passed args: {}", passedArgs);
 
         List<Order> orderList = orderService.getOrdersFromFile(
-                Paths.get("/Users/dmitry/Desktop/interview-unlimint.csv"));
+                Paths.get("/Users/dmitry/Desktop/interview-unlimint.json"));
+
         for (Order order : orderList) {
             System.out.println(order);
         }

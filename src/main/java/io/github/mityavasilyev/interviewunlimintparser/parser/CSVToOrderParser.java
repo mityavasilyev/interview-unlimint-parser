@@ -52,7 +52,7 @@ public class CSVToOrderParser implements FileToOrdersParser {
                 .withSeparator(delimiter)
                 .build();
 
-        csvReader = new CSVReaderBuilder(new FileReader(path.toAbsolutePath().toString()))
+        this.csvReader = new CSVReaderBuilder(new FileReader(path.toAbsolutePath().toString()))
                 .withCSVParser(csvParser)
                 .build();
     }
