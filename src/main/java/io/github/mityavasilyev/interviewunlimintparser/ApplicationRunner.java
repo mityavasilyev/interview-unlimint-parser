@@ -5,6 +5,10 @@ import io.github.mityavasilyev.interviewunlimintparser.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.ExitCodeGenerator;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Paths;
@@ -18,6 +22,7 @@ import java.util.concurrent.CompletableFuture;
 public class ApplicationRunner implements CommandLineRunner {
 
     private final OrderService orderService;
+    private final ApplicationContext context;
 
     @Override
     public void run(String... args) throws Exception {
@@ -43,7 +48,7 @@ public class ApplicationRunner implements CommandLineRunner {
         while (!godFatherOfFutures.isDone()) {
             Thread.sleep(1000); // Yes, I know it's busy-waiting. But that's intentional
         }
-        System.exit(0);
-
+        Thread.sleep(2000);
+        ((ConfigurableApplicationContext) context).close();
     }
 }
