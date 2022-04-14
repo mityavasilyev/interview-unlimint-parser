@@ -10,7 +10,6 @@ import io.github.mityavasilyev.interviewunlimintparser.model.Currency;
 import io.github.mityavasilyev.interviewunlimintparser.model.Order;
 import io.github.mityavasilyev.interviewunlimintparser.utils.OrderUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.omg.CORBA.UNKNOWN;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -32,7 +31,7 @@ public class CSVToOrderParser implements FileToOrdersParser {
      * Creates new CSV Parser with default delimiter
      * for csv file as ',' (comma).
      *
-     * @param path Path to the file to get data from
+     * @param path        Path to the file to get data from
      * @param idGenerator Class that will generate ids for Order entries
      * @throws FileNotFoundException if file was not found
      * @throws AccessDeniedException if file is protected
@@ -47,8 +46,8 @@ public class CSVToOrderParser implements FileToOrdersParser {
     /**
      * Creates new CSV Parser
      *
-     * @param path Path to the file to get data from
-     * @param  delimiter Custom csv delimiter
+     * @param path        Path to the file to get data from
+     * @param delimiter   Custom csv delimiter
      * @param idGenerator Class that will generate ids for Order entries
      * @throws FileNotFoundException if file was not found
      * @throws AccessDeniedException if file is protected
