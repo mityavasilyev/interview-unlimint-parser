@@ -1,0 +1,26 @@
+[
+    {
+        "orderId": 3,
+        "amount": 1.23,
+        "currency": "USD",
+        "comment": "Random purchase"
+    },
+    {
+        "orderId": 4,
+        "amount": 1.24,
+        "currency": "EUR",
+        "comment": "Yet another purchase"
+    },
+    {
+        "orderId": 5,
+        "amount": "100",
+        "currency": "RUB",
+        "comment": "Bail outta jail"
+    },
+    {
+        "orderId": "Wrecked",
+        "amount": "Totally",
+        "currency": "UnrealCurrency",
+        "comment": "This shouldn't work tbh"
+    }
+]

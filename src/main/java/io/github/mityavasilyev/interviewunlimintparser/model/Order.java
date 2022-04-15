@@ -26,7 +26,7 @@ public class Order {
                 "id:" + id +
                 ", orderId:" + orderId +
                 ", amount:" + amount +
-                ", currency:" + currency.getShortName() +    // Uncomment if currency is ever needed
+//                ", currency:" + currency.getShortName() +    // Uncomment if currency is ever needed
                 ", comment:'" + comment + '\'' +
                 ", filename:'" + fileName + '\'' +
                 ", line:" + line +
