@@ -150,7 +150,7 @@ public class CSVToOrderParser implements FileToOrdersParser {
         Currency currency;
         try {
             currency = Optional
-                    .of(Currency.valueOf(values[2].toUpperCase(Locale.ROOT)))
+                    .of(Currency.valueOf(values[2].toUpperCase(Locale.ROOT).trim()))
                     .orElseThrow(() -> new IllegalArgumentException("No currency provided"));
 
         } catch (Exception e) {
@@ -160,7 +160,7 @@ public class CSVToOrderParser implements FileToOrdersParser {
         }
 
         // Processing comment
-        String comment = values[3];
+        String comment = values[3].trim();
 
         return Order.builder()
                 .id(idGenerator.getNewId())
